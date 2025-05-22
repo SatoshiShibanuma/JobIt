@@ -1,0 +1,87 @@
+// Prisma Schema for User Authentication
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User model for authentication and profile management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  name          String?
+  
+  // Profile and social information
+  profile       Profile?
+  savedJobs     SavedJob[]
+
+  // Authentication and security
+  sessions      Session[]
+  accounts      Account[]
+
+  // Timestamps for tracking
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Additional user profile information
+model Profile {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Optional profile details
+  firstName     String?
+  lastName      String?
+  bio           String?
+  location      String?
+  profileImage  String?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Model for saving job postings
+model SavedJob {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  jobId         String
+  jobTitle      String
+  company       String
+  jobUrl        String
+  savedAt       DateTime  @default(now())
+}
+
+// Session management for authentication
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token         String    @unique
+  expiresAt     DateTime
+  createdAt     DateTime  @default(now())
+}
+
+// Third-party authentication accounts
+model Account {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type              String
+  provider          String
+  providerAccountId String
+  
+  createdAt         DateTime  @default(now())
+
+  @@unique([provider, providerAccountId])
+}
