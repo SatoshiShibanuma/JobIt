@@ -6,6 +6,7 @@ import ReduxProvider from "../redux/ReduxProvider";
 import { Toaster } from "@/components/ui/toaster";
 import NavBar from "@/components/NavBar";
 import { LocationProvider } from "@/context/LocationProvider";
+import { AuthProvider } from 'better-auth';
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -26,11 +27,13 @@ export default function RootLayout({
     <html lang="en" className={manrope.variable}>
       <LocationProvider>
         <body>
-          <ReduxProvider>
-            <NavBar />
-            {children}
-            <Toaster />
-          </ReduxProvider>
+          <AuthProvider>
+            <ReduxProvider>
+              <NavBar />
+              {children}
+              <Toaster />
+            </ReduxProvider>
+          </AuthProvider>
         </body>
       </LocationProvider>
     </html>
