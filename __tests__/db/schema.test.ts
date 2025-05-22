@@ -1,5 +1,23 @@
-import { describe, expect, it } from 'vitest'
-import { prisma } from '../../lib/db/prisma'
+import { describe, expect, it, beforeAll, afterAll } from 'vitest'
+import { PrismaClient } from '@prisma/client'
+import { execSync } from 'child_process'
+
+const prisma = new PrismaClient()
+
+beforeAll(async () => {
+  // Run database migrations before tests
+  try {
+    execSync('npx prisma migrate dev --name init_test_schema', { stdio: 'inherit' })
+  } catch (error) {
+    console.error('Migration failed:', error)
+    throw error
+  }
+})
+
+afterAll(async () => {
+  // Clean up after tests
+  await prisma.$disconnect()
+})
 
 describe('Authentication Database Schema', () => {
   it('should create a user with required fields', async () => {
