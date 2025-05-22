@@ -2,8 +2,8 @@
   "scripts": {
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init_auth_schema",
-    "db:reset": "prisma migrate reset --force",
-    "test": "vitest"
+    "prisma:reset": "prisma migrate reset --force",
+    "test": "prisma generate && vitest run"
   },
   "dependencies": {
     "@prisma/client": "latest"
