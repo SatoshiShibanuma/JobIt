@@ -12,7 +12,8 @@ export const comparePassword = async (
   plainPassword: string, 
   hashedPassword: string
 ): Promise<boolean> => {
-  return hashPassword(plainPassword) === hashedPassword;
+  const computedHash = await hashPassword(plainPassword);
+  return computedHash === hashedPassword;
 };
 
 // Generate JWT token
