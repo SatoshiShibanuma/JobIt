@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    // Add other custom pages as needed
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -38,6 +37,5 @@ export const authOptions: NextAuthOptions = {
       return session;
     }
   },
-  // Add additional configuration as needed
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'fallback_secret_for_testing',
 };
