@@ -1,27 +1,32 @@
-import { BetterAuth } from 'better-auth';
+import { createHash } from 'crypto';
+import jwt from 'jsonwebtoken';
 import authConfig from './config';
 
-// Initialize Better-Auth with the configuration
-export const betterAuth = new BetterAuth(authConfig);
-
-// Utility function to hash password
-export const hashPassword = async (password: string) => {
-  return await betterAuth.hashPassword(password);
+// Helper function to hash password
+export const hashPassword = async (password: string): Promise<string> => {
+  return createHash('sha256').update(password).digest('hex');
 };
 
-// Utility function to verify password
-export const comparePassword = async (password: string, hashedPassword: string) => {
-  return await betterAuth.comparePassword(password, hashedPassword);
+// Helper function to compare passwords
+export const comparePassword = async (
+  plainPassword: string, 
+  hashedPassword: string
+): Promise<boolean> => {
+  return hashPassword(plainPassword) === hashedPassword;
 };
 
-// Utility function to generate JWT token
-export const generateToken = (payload: Record<string, any>) => {
-  return betterAuth.generateToken(payload);
+// Generate JWT token
+export const generateToken = (payload: Record<string, any>): string => {
+  return jwt.sign(payload, authConfig.jwt.secret, { 
+    expiresIn: authConfig.jwt.expiresIn 
+  });
 };
 
-// Utility function to verify JWT token
-export const verifyToken = (token: string) => {
-  return betterAuth.verifyToken(token);
+// Verify JWT token
+export const verifyToken = (token: string): any => {
+  try {
+    return jwt.verify(token, authConfig.jwt.secret);
+  } catch (error) {
+    throw new Error('Invalid or expired token');
+  }
 };
-
-export default betterAuth;
