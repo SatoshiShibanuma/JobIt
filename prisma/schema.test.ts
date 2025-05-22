@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 
-describe('User Authentication Database Schema', () => {
+describe('User Authentication Database Schema', async () => {
   let prisma: PrismaClient
 
   beforeAll(() => {
@@ -9,7 +9,7 @@ describe('User Authentication Database Schema', () => {
   })
 
   afterAll(async () => {
-    await prisma.$disconnect()
+    await prisma?.$disconnect()
   })
 
   it('should create a user with valid data', async () => {
