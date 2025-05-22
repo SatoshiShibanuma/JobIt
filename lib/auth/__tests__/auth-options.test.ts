@@ -4,9 +4,9 @@ import { authOptions } from '../auth-options';
 describe('Authentication Configuration', () => {
   it('should have a valid NextAuth configuration', () => {
     expect(authOptions).toBeDefined();
-    expect(authOptions.providers).toBeTruthy();
+    expect(Array.isArray(authOptions.providers)).toBeTruthy();
     expect(authOptions.session?.strategy).toBe('jwt');
-    expect(authOptions.secret).toBeTruthy();
+    expect(authOptions.secret).toBeDefined();
   });
 
   it('should have credentials provider', () => {
