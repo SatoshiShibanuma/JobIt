@@ -1,12 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient()
 
-beforeAll(async () => {
-  // Optional: Run migrations or seed data
+export async function setupTests() {
   await prisma.$connect()
-})
+}
 
-afterAll(async () => {
+export async function teardownTests() {
   await prisma.$disconnect()
-})
+}
