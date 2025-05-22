@@ -11,7 +11,8 @@
     "ionic:serve": "npm run start",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -80,6 +81,6 @@
     "prettier-plugin-tailwindcss": "^0.4.0",
     "prisma": "^6.8.2",
     "typescript": "^5.1.6",
-    "vitest": "^3.1.4"
+    "vitest": "^0.34.6"
   }
 }
