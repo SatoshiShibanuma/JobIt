@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { hashPassword, comparePassword, generateToken, verifyToken } from 'better-auth';
+import { hashPassword, comparePassword, generateToken, verifyToken } from './utils';
 import { authConfig } from './config';
 
 describe('Authentication Utilities', () => {
