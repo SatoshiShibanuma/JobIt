@@ -16,13 +16,15 @@ describe('User Authentication Schema', () => {
     const user = await prisma.user.create({
       data: {
         email: 'test@example.com',
-        password: 'hashedpassword123',
+        password_hash: 'hashedpassword123',
       }
     })
 
     expect(user).toBeTruthy()
     expect(user.email).toBe('test@example.com')
     expect(user.id).toBeTruthy()
+    expect(user.created_at).toBeTruthy()
+    expect(user.updated_at).toBeTruthy()
   })
 
   it('should prevent duplicate email creation', async () => {
@@ -31,7 +33,7 @@ describe('User Authentication Schema', () => {
     await prisma.user.create({
       data: {
         email,
-        password: 'hashedpassword123',
+        password_hash: 'hashedpassword123',
       }
     })
 
@@ -39,7 +41,7 @@ describe('User Authentication Schema', () => {
       prisma.user.create({
         data: {
           email,
-          password: 'anotherpassword',
+          password_hash: 'anotherpassword',
         }
       })
     ).rejects.toThrow()
@@ -49,18 +51,18 @@ describe('User Authentication Schema', () => {
     const user = await prisma.user.create({
       data: {
         email: 'jobsaver@example.com',
-        password: 'hashedpassword123',
+        password_hash: 'hashedpassword123',
       }
     })
 
     const savedJob = await prisma.savedJob.create({
       data: {
-        userId: user.id,
-        jobId: 'job123',
+        user_id: user.id,
+        job_id: 'job123',
       }
     })
 
     expect(savedJob).toBeTruthy()
-    expect(savedJob.userId).toBe(user.id)
+    expect(savedJob.user_id).toBe(user.id)
   })
 })
