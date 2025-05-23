@@ -8,23 +8,26 @@ generator client {
 }
 
 model User {
-  id             String      @id @default(cuid())
-  email          String      @unique
-  emailVerified  DateTime?   
-  name           String?
-  password       String      // Hashed password
-  image          String?     // Optional profile image URL
-  savedJobs      SavedJob[]
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  email         String      @unique
+  password_hash String      // Changed from 'password' to 'password_hash'
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  
+  // Optional: add more user-related fields if needed
+  name          String?
+  profile_image String?
+
+  saved_jobs    SavedJob[]
 }
 
 model SavedJob {
-  id             String      @id @default(cuid())
-  userId         String
-  jobId          String
-  savedAt        DateTime    @default(now())
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  user_id    String
+  job_id     String
+  saved_at   DateTime @default(now())
+  
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@unique([userId, jobId])
+  @@unique([user_id, job_id])
 }
