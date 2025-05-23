@@ -1,7 +1,18 @@
-import { describe, it, expect } from 'vitest'
-import { prisma } from '../lib/prisma/client'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { PrismaClient } from '@prisma/client'
+
+// Dynamically import the Prisma client to avoid initialization issues
+let prisma: PrismaClient
 
 describe('User Authentication Schema', () => {
+  beforeAll(async () => {
+    prisma = new PrismaClient()
+  })
+
+  afterAll(async () => {
+    await prisma.$disconnect()
+  })
+
   it('should create a user with required fields', async () => {
     const user = await prisma.user.create({
       data: {
