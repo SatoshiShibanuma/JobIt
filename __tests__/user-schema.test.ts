@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { PrismaClient } from '@prisma/client'
 
-// Dynamically import the Prisma client to avoid initialization issues
-let prisma: PrismaClient
-
 describe('User Authentication Schema', () => {
-  beforeAll(async () => {
+  let prisma: PrismaClient
+
+  beforeAll(() => {
     prisma = new PrismaClient()
   })
 
