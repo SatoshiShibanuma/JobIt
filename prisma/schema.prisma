@@ -1,0 +1,41 @@
+// Database schema for user authentication
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User model for authentication and profile management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  
+  // Optional profile information
+  profileImage  String?
+  
+  // Authentication and security fields
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relation to saved jobs (to be implemented later)
+  savedJobs     SavedJob[]
+}
+
+// Model for saving job postings
+model SavedJob {
+  id            String    @id @default(cuid())
+  userId        String
+  jobId         String
+  savedAt       DateTime  @default(now())
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+}
